@@ -1,0 +1,1 @@
+var mongoose = require('mongoose'),    Schema = mongoose.Schema;    var scorecompSchema= new Schema({    title: String,    weight: Number});mongoose.model('scorecomp', scorecompSchema);

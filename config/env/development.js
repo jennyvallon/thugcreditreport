@@ -1,0 +1,1 @@
+module.exports = {    db: 'mongodb://localhost/thugcreditreport',//connection to correct database for development env    sessionSecret: 'developmentSessionSecret'};
