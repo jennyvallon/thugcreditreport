@@ -1,16 +1,32 @@
-var User = require('mongoose').model('User');
+var User = require('mongoose').model('user');
 
 //create new user
 exports.create = function(req, res, next) {
+    console.log("users route fire");
     var user = new User(req.body);
     user.save(function(err) {
+        if (err) {
+            console.log("error");
+            return next(err);
+        } 
+        else {
+            console.log("response");
+            res.json(user);
+        }
+    }); 
+};
+
+
+//list of all users - testing purposes only
+exports.list = function(req, res, next) {
+    User.find({}, function(err, users) {
         if (err) {
             return next(err);
         } 
         else {
-            res.json(user);
-        }
-    }); 
+            res.json(users);
+        } 
+    });
 };
 
 
@@ -23,6 +39,7 @@ exports.update = function(req, res, next) {
       res.json(user);
 } });
 };
+
 
 
 //delete account
