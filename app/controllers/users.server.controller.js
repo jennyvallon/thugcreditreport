@@ -2,19 +2,19 @@ var User = require('mongoose').model('user');
 
 //create new user
 exports.create = function(req, res, next) {
-    console.log("users route fire");
     var user = new User(req.body);
     user.save(function(err) {
         if (err) {
-            console.log("error");
             return next(err);
         } 
         else {
-            console.log("response");
-            res.json(user);
+            console.log(user);
+            res.end()
         }
     }); 
 };
+
+
 
 
 //list of all users - testing purposes only
