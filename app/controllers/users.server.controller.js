@@ -9,7 +9,7 @@ exports.create = function(req, res, next) {
         } 
         else {
             console.log(user);
-            res.end()
+            res.end();
         }
     }); 
 };

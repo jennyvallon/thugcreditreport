@@ -1,1 +1,1 @@
-var questions = require('../../app/controllers/questions.server.controller');   module.exports = function(app) {            app.route('/questions')       .get(questions.list)       .get(questions.render);     };
+var questions = require('../../app/controllers/questions.server.controller');   module.exports = function(app) {            app.route('/questions')       .get(questions.list)       .get(questions.render);             app.route("/getQuestions")        .get(questions.list2);};
