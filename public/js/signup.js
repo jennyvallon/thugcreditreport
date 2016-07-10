@@ -28,7 +28,7 @@
 
         var userInfo={"firstName":firstName,"lastName":lastName,"email":email,"userName":userName,"password":password,"selfReportingForm":questions};
 
-        var success= goToQuestionsPage;
+        var success= goToQuestionsPage();
 
         $.ajax({
             type: "POST",
