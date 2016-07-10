@@ -1,0 +1,1 @@
+var users = require('../../app/controllers/signup.server.controller');module.exports = function(app) {       app.route('/users')       .post(users.create)    ;        app.route('/questions')       .get(users.list)       .get(users.render)    ;             app.route("/getQuestions")        .get(users.list2)    ;};
