@@ -1,6 +1,5 @@
 var User = require('mongoose').model('user');
 var Question = require('mongoose').model('question');
-var session = require('express-session');
 
 
 //create new user
