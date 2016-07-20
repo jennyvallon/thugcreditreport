@@ -14,6 +14,7 @@
     "method-override": "latest",
     "mongoose": "4.5.1",
     "morgan": "latest",
+    "session-file-store": "^0.2.0",
     "uid": "0.0.2"
   }
 }
