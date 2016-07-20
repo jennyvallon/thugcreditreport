@@ -7,11 +7,13 @@
   "dependencies": {
     "body-parser": "1.15.2",
     "connect-mongo": "^1.2.1",
+    "cookie-parser": "^1.4.3",
     "ejs": "latest",
     "express": "~4.8.8",
     "express-session": "^1.14.0",
     "method-override": "latest",
     "mongoose": "4.5.1",
-    "morgan": "latest"
+    "morgan": "latest",
+    "uid": "0.0.2"
   }
 }
