@@ -5,14 +5,18 @@ var Question = require('mongoose').model('question');
 //create new user
 exports.create = function(req, res, next) {
     var user = new User(req.body);
-    user.save(function(err) {
-        if (err) {
-            return next(err);
-        } 
-        else {
-            res.end();
-        }
-    }); 
+    
+    req.session.regenerate(function(err) {
+        user.save(function(err) {
+            if (err) {
+                return next(err);
+            } 
+            else {
+                req.session.user=user;
+                res.end();
+            }      
+        });
+    });
 };
 
 
