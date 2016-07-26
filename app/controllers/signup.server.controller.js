@@ -1,7 +1,5 @@
 var User = require('mongoose').model('user');
 var Question = require('mongoose').model('question');
-var session = require('express-session');
-var FileStore = require('session-file-store')(session);
 
 
 //create new user
@@ -56,5 +54,45 @@ exports.render=function(req,res,next){
     }); 
 };
 
+exports.userQuestions=function(req,res,next){//give me users questions
+    req.session.reload(function(err){
+        var questions=JSON.parse(req.session.user.selfReportingForm);//need to do this to make it an array
+        if(err){
+            next(err);
+        }
+        else{
+            res.json(questions);
+        } 
+    });
+};
 
+
+exports.updateUsersQuestions=function(req,res,next){
+    req.session.reload(function(err){//access session
+        var id=req.session.user._id;
+        if(err){
+            next(err);
+        }
+        else{
+//            console.log(req.session);
+            req.session.user.selfReportingForm=req.body.selfReportingForm;//update user session
+            req.session.save(function(err) {//save session
+                if (err) {
+                    return next(err);
+                } else{}
+            }); 
+//            console.log(req.body);
+            var update={$set:req.body};
+            var options={new: true};
+            User.findByIdAndUpdate(id, update, options, function(err, result) {
+                if (err) {
+                    return next(err);
+                } else {
+                    res.end();
+                }
+            });
+        }
+    });
+
+};
 
