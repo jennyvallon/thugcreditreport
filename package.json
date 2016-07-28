@@ -12,8 +12,14 @@
     "express-session": "^1.14.0",
     "method-override": "latest",
     "mongoose": "4.5.1",
-    "morgan": "latest",
     "session-file-store": "^0.2.0",
     "uid": "0.0.2"
+  },
+  "devDependencies": {
+    "del": "^2.2.1",
+    "gulp": "gulpjs/gulp#4.0",
+    "gulp-shell": "^0.5.2",
+    "morgan": "^1.7.0",
+    "nodemon": "^1.10.0"
   }
 }
