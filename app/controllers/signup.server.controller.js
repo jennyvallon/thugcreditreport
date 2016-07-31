@@ -6,6 +6,7 @@ var Question = require('mongoose').model('question');
 exports.create = function(req, res, next) {
     var user = new User(req.body);
     
+    
     req.session.regenerate(function(err) {//start a new session
         user.save(function(err) {//create new user
             if (err) {
@@ -13,6 +14,7 @@ exports.create = function(req, res, next) {
             } 
             else {
                 req.session.user=user;//save data to session. "user" represents user data as it would be in database
+                
                 req.session.save(function(err) {//save session
                     if (err) {
                         return next(err);
