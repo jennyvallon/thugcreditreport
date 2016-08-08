@@ -1,50 +1,40 @@
 var User = require('mongoose').model('user');
 var Question = require('mongoose').model('question');
-
+var passport = require('passport');
+var questionaire;
 
 //create new user
-exports.create = function(req, res, next) {
-    var user = new User(req.body);
-    
-    
-    req.session.regenerate(function(err) {//start a new session
-        user.save(function(err) {//create new user
-            if (err) {
-                return next(err);
-            } 
-            else {
-                req.session.user=user;//save data to session. "user" represents user data as it would be in database
-                
-                req.session.save(function(err) {//save session
-                    if (err) {
-                        return next(err);
-                    } 
-                });
-                res.end();
-            }      
-        });
-    });
-};
+//exports.create = function(req, res, next) {
+//    var user = new User(req.body);
+//    
+//    
+//    req.session.regenerate(function(err) {//start a new session
+//        user.save(function(err) {//create new user
+//            if (err) {
+//                return next(err);
+//            } 
+//            else {
+//                req.session.user=user;//save data to session. "user" represents user data as it would be in database
+//                
+//                req.session.save(function(err) {//save session
+//                    if (err) {
+//                        return next(err);
+//                    } 
+//                });
+//                res.end();
+//            }      
+//        });
+//    });
+//};
 
 
-
-
-//populate selfReportingForm object directly from the db
-exports.list2 = function(req, res, questions) {
-    Question.find().populate('section').exec(function(err, questions) {
-        if (err) {
-            return next(err);
-        } else {
-           res.json(questions); 
-        } 
-    });
-};
 
 //render questions as survey
-exports.render=function(req,res,next){
+exports.renderQuestions=function(req,res,next){
+    
     req.session.reload(function(err){//load users session
+        
         var questions=JSON.parse(req.session.user.selfReportingForm);//need to do this to make it an array
-       
         if(err){
             next(err);
         }
@@ -56,45 +46,231 @@ exports.render=function(req,res,next){
     }); 
 };
 
-exports.userQuestions=function(req,res,next){//give me users questions
-    req.session.reload(function(err){
-        var questions=JSON.parse(req.session.user.selfReportingForm);//need to do this to make it an array
-        if(err){
-            next(err);
-        }
-        else{
-            res.json(questions);
-        } 
-    });
-};
+//exports.userQuestions=function(req,res,next){//give me users questions
+//    req.session.reload(function(err){
+//        var questions=JSON.parse(req.session.user.selfReportingForm);//need to do this to make it an array
+//        if(err){
+//            next(err);
+//        }
+//        else{
+//            res.json(questions);
+//        } 
+//    });
+//};
 
 
 exports.updateUsersQuestions=function(req,res,next){
+    var id=req.session.passport.user;
     req.session.reload(function(err){//access session
-        var id=req.session.user._id;
+        
         if(err){
+            console.log("ERROR");
+            console.log(err);
             next(err);
         }
         else{
-//            console.log(req.session);
+
             req.session.user.selfReportingForm=req.body.selfReportingForm;//update user session
-            req.session.save(function(err) {//save session
-                if (err) {
-                    return next(err);
-                } else{}
-            }); 
-//            console.log(req.body);
-            var update={$set:req.body};
+            var update={$set:{selfReportingForm:req.session.user.selfReportingForm}};
             var options={new: true};
-            User.findByIdAndUpdate(id, update, options, function(err, result) {
+            User.findByIdAndUpdate(id, update, options, function(err) {
                 if (err) {
+                    console.log("ERROR");
+                    console.log(err);
                     return next(err);
-                } else {
-                    res.end();
-                }
+                } else {res.end();}
             });
         }
     });
 
 };
+
+var getErrorMessage = function (err) {
+    var message = '';
+    if (err.code) {
+        switch (err.code) {
+            case 11000:
+            case 11001:
+                message = 'Username already exists';
+                break;
+            default:
+                message = 'Something went wrong';
+        }
+    } else {
+        for (var errName in err.errors) {
+            if (err.errors[errName].message)
+                message = err.errors[errName].
+                        message;
+        }
+    }
+    return message;
+};
+
+exports.renderSignin = function (req, res, next) {
+    
+    
+    if (!req.user) {
+        res.render('signin', {
+            title: 'Sign-in Form',
+            messages: req.flash('error') || req.flash('info')
+        });
+    } else {
+        return res.redirect('/');
+    }
+};
+
+
+exports.renderSignup = function (req, res, next) {
+    if (!req.session.user) {
+        res.render('signup', {
+            title: 'Sign-up Form',
+            messages: req.flash('error')
+        });
+    } else {
+        return res.redirect('/');//send user to dashboard
+    }
+};
+
+exports.renderHomepage = function (req, res, next) {
+    if (!req.user) {//if user does not have account
+        res.render('home', {});
+    } else {//if user does exist
+        return res.send('<p>YOU ARE LOGGED IN</p>');//render dashboard TO-DO
+    }
+};
+
+
+
+
+
+exports.signout = function (req, res) {
+    req.logout();
+    res.redirect('/');
+        
+    
+};
+
+
+//TAKE TIME TO RESTRUCTURE THIS FUNCTION
+exports.saveOAuthUserProfile = function (req, profile, done) {//REFERRING TO PROFILE GENERATED BY VAR providerUserProfile IN FACEBOOK.JS
+    
+    User.findOne({//see if user has account oauth account in db
+        provider: profile.provider,
+        providerId: profile.providerId
+    }, function (err, user) {
+        if (err) {//if error with query
+            return done(err);
+        } else {//if query run successfully
+            if (!user) {//if no oauth info
+                //they have no account at all with thug report
+                var possibleUsername = profile.username ||
+                        ((profile.email) ? profile.email.split('@')[0] : '');
+                User.findUniqueUsername(possibleUsername, null,
+                function (availableUsername) {
+                    profile.username = availableUsername;
+                    user = new User(profile);
+                    user.save(function (err) {
+                        if (err) {
+                            var message = err;
+                            req.flash('error', message);
+                           return res.redirect('/signup');//TOD0--why is res undefined? why is response object not avail in here?s
+                        }
+                        return done(err, user);
+                    });
+                });
+                //they have an account with thug report and have not linked it with oauth
+            } else {
+                return done(err, user);
+            }
+        }
+    });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+exports.signup = function (req, res, next) {
+
+    if (!req.session.user) {
+        req.session.reload(function(err){
+            if(err){
+                next(err);
+            }else{
+                req.session.user=req.body;//create user info
+                next();//populate questions
+                var user = new User(req.session.user);
+                var message = null;
+                user.provider = 'local';
+                user.save(function (err) {
+                    if (err) {
+                        var message = getErrorMessage(err);
+                        req.flash('error', message);
+                        return res.redirect('/signup');
+                    }else{
+                        req.login(user, function (err) {
+                            if (err){
+                                return next(err);
+                            } 
+                            return res.redirect('/questions');
+                        });           
+                    }   
+                });   
+            }
+        });  
+    } else {
+        return res.redirect('/');
+    }
+
+};
+
+
+
+exports.retrieveSelfReportingFormFromDb = function(req, res, next) {
+    
+    Question.find().populate('section').exec(function(err, questions) {
+        if (err) {
+            return next(err);
+        } else {
+           req.session.user.selfReportingForm=JSON.stringify(questions);
+           
+           req.session.save(function(){
+               if(err){
+                   console.log("ERROR");
+                   console.log(err);
+                   next(err);
+                }
+           });
+        }  
+    }); 
+};
+
+exports.sessionQuestions=function(req,res, next){
+    req.session.reload(function(err){
+        if(err){
+            next(err);
+        }
+        res.send(req.session.user.selfReportingForm);
+    });
+};
+
 

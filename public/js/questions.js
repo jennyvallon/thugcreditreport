@@ -1,6 +1,6 @@
 $(document).ready(function(){
     var selfReportingForm; //users session form
-    var success=function(){console.log("poop");};
+    var success=function(){window.location='/';};
     
     //take data-x attribute and move values into data object
     $('li > input').each(function(){
@@ -17,10 +17,9 @@ $(document).ready(function(){
         //will then populate users session
     $.ajax({
         type: "GET",   
-        url: "./getUsersForm",   
-        async: false,
+        url: "./userQuestions",   
         success : function(response){
-            selfReportingForm=response;
+            selfReportingForm=JSON.parse(response);
             console.log(selfReportingForm);
         }
     });
@@ -40,7 +39,7 @@ $(document).ready(function(){
         }
         
         selfReportingForm[i].answers[j].chosen=true;
-//        console.log(selfReportingForm);
+        console.log(selfReportingForm[i].answers[j]);
     });
     
     //on submit click
@@ -52,9 +51,9 @@ $(document).ready(function(){
         
         $.ajax({
             type: "POST",
-            url: "/getUsersForm",
+            url: "/userQuestions",
             data: data,
-            success: function(){console.log(data);}(),
+            success: success(),
             dataType: 'json'
         }); 
     });

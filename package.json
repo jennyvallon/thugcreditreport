@@ -6,12 +6,15 @@
   "author": "Jenny Vallon",
   "dependencies": {
     "body-parser": "1.15.2",
+    "connect-flash": "^0.1.1",
     "connect-mongo": "^1.2.1",
+    "crypto": "0.0.3",
     "ejs": "latest",
     "express": "~4.8.8",
     "express-session": "^1.14.0",
     "method-override": "latest",
     "mongoose": "4.5.1",
+    "passport-facebook": "^2.1.1",
     "session-file-store": "^0.2.0",
     "uid": "0.0.2"
   },
