@@ -60,17 +60,17 @@ exports.renderQuestions=function(req,res,next){
 
 
 exports.updateUsersQuestions=function(req,res,next){
-    var id=req.session.passport.user;
+    
     req.session.reload(function(err){//access session
-        
+        var id=req.session.passport.user;
         if(err){
             console.log("ERROR");
             console.log(err);
             next(err);
         }
         else{
-
             req.session.user.selfReportingForm=req.body.selfReportingForm;//update user session
+
             var update={$set:{selfReportingForm:req.session.user.selfReportingForm}};
             var options={new: true};
             User.findByIdAndUpdate(id, update, options, function(err) {
@@ -109,7 +109,7 @@ var getErrorMessage = function (err) {
 exports.renderSignin = function (req, res, next) {
     
     
-    if (!req.user) {
+    if (!req.user) {//if no one is logged in
         res.render('signin', {
             title: 'Sign-in Form',
             messages: req.flash('error') || req.flash('info')
@@ -121,7 +121,7 @@ exports.renderSignin = function (req, res, next) {
 
 
 exports.renderSignup = function (req, res, next) {
-    if (!req.session.user) {
+    if (!req.user) {//no one is logged in
         res.render('signup', {
             title: 'Sign-up Form',
             messages: req.flash('error')
@@ -132,7 +132,8 @@ exports.renderSignup = function (req, res, next) {
 };
 
 exports.renderHomepage = function (req, res, next) {
-    if (!req.user) {//if user does not have account
+    
+    if (!req.user) {//if nconsole.log(res);
         res.render('home', {});
     } else {//if user does exist
         return res.send('<p>YOU ARE LOGGED IN</p>');//render dashboard TO-DO
@@ -211,36 +212,20 @@ exports.saveOAuthUserProfile = function (req, profile, done) {//REFERRING TO PRO
 
 exports.signup = function (req, res, next) {
 
-    if (!req.session.user) {
+    if (!req.user) {//if no one is logged in
         req.session.reload(function(err){
             if(err){
                 next(err);
             }else{
                 req.session.user=req.body;//create user info
                 next();//populate questions
-                var user = new User(req.session.user);
-                var message = null;
-                user.provider = 'local';
-                user.save(function (err) {
-                    if (err) {
-                        var message = getErrorMessage(err);
-                        req.flash('error', message);
-                        return res.redirect('/signup');
-                    }else{
-                        req.login(user, function (err) {
-                            if (err){
-                                return next(err);
-                            } 
-                            return res.redirect('/questions');
-                        });           
-                    }   
-                });   
+                
+                   
             }
         });  
     } else {
         return res.redirect('/');
     }
-
 };
 
 
@@ -253,12 +238,30 @@ exports.retrieveSelfReportingFormFromDb = function(req, res, next) {
         } else {
            req.session.user.selfReportingForm=JSON.stringify(questions);
            
-           req.session.save(function(){
-               if(err){
+            req.session.save(function(){
+                if(err){
                    console.log("ERROR");
                    console.log(err);
                    next(err);
                 }
+                var user = new User(req.session.user);
+                var message = null;
+                user.provider = 'local';
+                user.save(function (err) {
+                    if (err) {
+                        var message = getErrorMessage(err);
+                        req.flash('error', message);
+                        console.log(err);
+                        return res.redirect('/signup');
+                    }else{
+                        req.login(user, function (err) {
+                            if (err){
+                                return next(err);
+                            } 
+                            return res.redirect('/questions');
+                        });           
+                    }   
+                });
            });
         }  
     }); 
@@ -272,5 +275,8 @@ exports.sessionQuestions=function(req,res, next){
         res.send(req.session.user.selfReportingForm);
     });
 };
+
+
+
 
 

@@ -20,9 +20,12 @@
   },
   "devDependencies": {
     "del": "^2.2.1",
+    "fs": "0.0.2",
     "gulp": "gulpjs/gulp#4.0",
     "gulp-shell": "^0.5.2",
     "morgan": "^1.7.0",
-    "nodemon": "^1.10.0"
+    "nodemon": "^1.10.0",
+    "should": "^10.0.0",
+    "supertest": "^2.0.0"
   }
 }
