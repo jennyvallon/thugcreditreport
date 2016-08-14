@@ -15,7 +15,7 @@ var db = config.db;
 var sessionFile;
 var sessionData;
 var user={firstName:"TEST",lastName:"TEST",email:"TEST@gmail.com",userName:"testTEST", password:"TESTTESTTEST!", provider:"local"};
-
+var userlogin={userName:user.userName,password:user.password}
 
 describe('SIGNUP', function () {//mocha
     before(function (done) {
@@ -101,8 +101,7 @@ describe('SIGNUP', function () {//mocha
                             res.text.should.containEql('radio');
                             res.text.should.containEql('Yes');
                             res.status.should.be.equal(200);
-
-                           done();
+                            done();
                         });
             });
             it('Should post user questions update session and db', function (done) {
@@ -110,8 +109,8 @@ describe('SIGNUP', function () {//mocha
                 supertest(app).post('/userQuestions')//supertest
                         .send(answers)
                         .end(function(err,res){
-                            
-                            res.status.should.be.equal(200);
+                            res.status.should.be.equal(302);
+                            res.text.should.containEql('Found. Redirecting to /');
                             //make sure session has updated data
                             sessionData=JSON.parse(fs.readFileSync('sessions/'+sessionFile).toString());
                             sessionData.user.selfReportingForm.should.containEql(true);
@@ -120,29 +119,116 @@ describe('SIGNUP', function () {//mocha
                             User.findOne(answers, function (err, user) {
                                 if(err){console.log('ERROR: db was not updated with session data');}
                             });
-                            
                             done();
                         });
             });
             //unable to test '/' request for "YOU ARE LOGGED IN" RESPONSE TEXT.
+            it('Should signout and redirect to homepage', function (done) {
+                supertest(app).get('/signout')//supertest
+                        .end(function(err,res){
+                            res.text.should.containEql('Found. Redirecting to /');
+                            res.status.should.be.equal(302);
+                           done();
+                        });
+            });
         });
     
     after(function (done) {
-       
-        before(function (done) {
-            child_process.exec('gulp clean', function(error, stdout, stderr) {
-                console.log('stdout: ' + stdout);
-               if(stderr!==''){ console.log('stderr: ' + stderr);};
+        child_process.exec('gulp clean', function(error, stdout, stderr) {
+            console.log('stdout: ' + stdout);
+           if(stderr!==''){ console.log('stderr: ' + stderr);};
 
-                if (error !==null) {
-                    console.log('exec error: ' + error);
-                }
-                done();
+            if (error !==null) {
+                console.log('exec error: ' + error);
+            }
+            done();
+        });
+    });
+});
+
+describe('SIGNIN', function () {//mocha
+    before(function (done) {
+        child_process.exec('gulp clean', function(error, stdout, stderr) {
+            console.log('stdout: ' + stdout);
+           if(stderr!==''){ console.log('stderr: ' + stderr);};
+            
+            if (error !==null) {
+                console.log('exec error: ' + error);
+            }
+            done();
+        });
+    });
+    
+        describe('USING LOCAL:PASSPORT', function () {
+            it('Should render ThugReport homepage', function (done) {
+                supertest(app).get('/')//supertest
+                        .end(function(err,res){
+                            res.text.should.containEql('Reputation beyond work of mouth');
+                            res.status.should.be.equal(200);
+                           done();
+                        });
+            });
+            it('Should render signin page and create session', function (done) {
+                supertest(app).get('/signin')
+                        .end(function(err,res){
+                            
+                            res.text.should.containEql('Sign In');
+                            res.status.should.be.equal(200);
+                            sessionFile=fs.readdirSync('sessions')[0];
+                            if (sessionFile===undefined){
+                                err= "ERROR: SESSION WAS NOT CREATED";
+                                console.log(err);
+                                throw err;
+                            }
+                            done();
+                        });
+            });
+            it('Should redirect to dashboard', function (done) {
+                
+                supertest(app).post('/signin')
+                        .send(userlogin)
+                        .end(function(err,res){
+                            sessionData=JSON.parse(fs.readFileSync('sessions/'+sessionFile).toString());
+                            //redirect
+                            res.status.should.be.equal(302);
+                            res.text.should.containEql('Found. Redirecting to /');  
+                            done();
+                        });
+            });
+            //unable to test '/' request for "YOU ARE LOGGED IN" RESPONSE TEXT.
+            it('Should signout and redirect to homepage', function (done) {
+                supertest(app).get('/signout')//supertest
+                        .end(function(err,res){
+                            res.text.should.containEql('Found. Redirecting to /');
+                            res.status.should.be.equal(302);
+                           done();
+                        });
             });
         });
-//       
-        done();
+    
+    after(function (done) {
+        child_process.exec('gulp clean', function(error, stdout, stderr) {
+            console.log('stdout: ' + stdout);
+           if(stderr!==''){ console.log('stderr: ' + stderr);};
+
+            if (error !==null) {
+                console.log('exec error: ' + error);
+            }
+            done();
+        });
     });
+});
+
+
+describe('RANDOM SCORE GENERATION', function () {
+            it('Should return random number between 300 and 800', function (done) {
+                supertest(app).get('/score')//supertest
+                        .end(function(err,res){
+                            parseInt(res.text).should.be.a.Number();
+                            done();
+                        });
+            });
+            
 });
 
 
