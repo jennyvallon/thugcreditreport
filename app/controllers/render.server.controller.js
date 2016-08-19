@@ -48,10 +48,20 @@ exports.signup = function (req, res, next) {
 
 exports.landingPage = function (req, res, next) {
     
-    if (!req.user) {//if nconsole.log(res);
+    if (!req.user) {//if no one is logged in;
         res.render('home', {});
-    } else {//if user does exist
-        return res.send('<p>YOU ARE LOGGED IN</p>');//render dashboard TO-DO
+    } else if(!req.session.user || !req.session){
+        res.redirect('/signout');
+    }
+    else  {//if user does exist
+        
+        res.render('dashboard',{
+            thugScore:req.session.user.scores.thugScore,
+            highlightedScore:req.session.user.scores.highlighted.score,
+            highlightedText:req.session.user.scores.highlighted.text,
+            highlightedSection:req.session.user.scores.highlighted.section
+        }); 
+       
     }
 };
 

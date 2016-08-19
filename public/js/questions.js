@@ -1,6 +1,6 @@
 $(document).ready(function(){
     var selfReportingForm; //users session form
-    var success=function(){window.location='/';};
+    var success=function(){window.location='/dashboard';};
     
     //take data-x attribute and move values into data object
     $('li > input').each(function(){

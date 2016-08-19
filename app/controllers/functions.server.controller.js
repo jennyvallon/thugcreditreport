@@ -29,3 +29,19 @@ exports.getErrorMessage = function (err) {
     return message;
 };
 
+exports.printError= function(err){
+    console.log("************************************");
+    console.log("************************************");
+    console.log("ERROR");
+    console.log(err);
+    console.log("************************************");
+    console.log("************************************");
+};
+
+exports.returnHighlightedScoreText=function(array,lowScore){
+    for (var k=0; k<array.length; k++){
+        if (((array[k].rangeBottom<=lowScore) && (lowScore<=array[k].rangeTop))==true){
+            return array[k].text;
+        }
+    };
+};
