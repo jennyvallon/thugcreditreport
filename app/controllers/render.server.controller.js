@@ -65,6 +65,19 @@ exports.landingPage = function (req, res, next) {
     }
 };
 
+exports.simulator = function (req, res, next) {
+    
+    if (!req.user) {//if no one is logged in;
+        res.render('home', {});
+    } else if(!req.session.user || !req.session){
+        res.redirect('/signout');
+    }
+    else  {//if user does exist
+        
+        res.render('simulator',{});   
+    }
+};
+
 
 
 

@@ -15,7 +15,9 @@ var db = config.db;
 var sessionFile;
 var sessionData;
 var user={firstName:"TEST",lastName:"TEST",email:"TEST@gmail.com",userName:"testTEST", password:"TESTTESTTEST!", provider:"local"};
-var userlogin={userName:user.userName,password:user.password}
+var userlogin={userName:user.userName,password:user.password};
+
+//NODE_ENV=test mocha --reporter spec app/tests
 
 describe('SIGNUP', function () {//mocha
     before(function (done) {
