@@ -40,7 +40,25 @@ exports.in=function(req,res,next){
     
     req.session.reload(function(err){
         if(err){
-            return res.redirect('/signout');
+            req.session.generate(function(err){
+                if(err){funct.printError(err);}
+                else{
+                    User.findOne({//see if user has account oauth account in db
+                        _id: req.session.passport.user
+                    }, function (err, user) {
+                        if (err) {//if error with query
+                            return done(err);
+                        } else {//rebuild session
+
+                            req.session.user = {};
+                            req.session.user.userName = user.userName;
+                            req.session.user.selfReportingForm = user.selfReportingForm;
+                            req.session.user.scores = user.scores;
+                            next();
+                        }
+                    });
+                }
+            });
         }
     
         else if(!req.session.user){

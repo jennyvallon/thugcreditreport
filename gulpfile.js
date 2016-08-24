@@ -17,7 +17,7 @@ function runCommand(command) {
 
 //these gulp tasks will make testing the server easier because cleaning 
 //the user collection and session folder are now automated
-gulp.task('clean-db', runCommand('mongo localhost:27017/thugcreditreport gulpfile/cleandb.js'));
+gulp.task('clean-db', runCommand('mongo 208.82.115.80:27017/thugcreditreport gulpfile/cleandb.js'));
 gulp.task('clean-sessions', function (cb) { del(['sessions/*']);cb;});
 //app start and watch are being handled by nodemon --nodemon server.js in CLI
 

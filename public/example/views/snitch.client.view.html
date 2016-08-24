@@ -1,0 +1,18 @@
+<section ng-controller="snitch">
+    <input type="range" name="snitch" min="0" max="3" step="1" list="steplist" 
+           ng-model="simulatedActionNumber"
+           ng-model-options="{ updateOn: 'change' }"
+           ng-change="change()">
+           
+    <datalist id="steplist">
+        <option>0</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+    </datalist>
+    <p>
+        If you snitch <span>{{simulatedActionNumber}}</span> times 
+        <strong>at any given point</strong> in the future, 
+        <span>{{simulatedActionDetail}}</span>
+    </p>
+</section> 

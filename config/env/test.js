@@ -3,9 +3,25 @@ var uid = require('uid');
 var string= uid();
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
+//var user='thugReportAppAdmin';
+//var password='mpu7$XbPrTuz?D';
 
 module.exports = {
-    db: 'mongodb://localhost/thugcreditreport',//connection to correct database for development env
+    test:{
+        firstName:"TEST",
+        lastName:"TEST",
+        email:"TEST@gmail.com",
+        userName:"testTEST", 
+        password:"TESTTESTTEST!", 
+        provider:"local"
+    },
+    db:{
+        uri:'mongodb://208.82.115.80:27017/thugcreditreport'//connection to correct database for development env
+//        options:{
+//            user:user,
+//            pass:password
+//        }
+    },
     sessionSecret: sessionSecret,
     viewEngine:'ejs',
     sessionOptions: {  

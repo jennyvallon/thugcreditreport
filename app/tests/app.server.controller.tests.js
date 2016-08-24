@@ -14,7 +14,7 @@ var db = config.db;
 
 var sessionFile;
 var sessionData;
-var user={firstName:"TEST",lastName:"TEST",email:"TEST@gmail.com",userName:"testTEST", password:"TESTTESTTEST!", provider:"local"};
+var user=config.test
 var userlogin={userName:user.userName,password:user.password};
 
 //NODE_ENV=test mocha --reporter spec app/tests
@@ -25,7 +25,7 @@ describe('SIGNUP', function () {//mocha
             console.log('stdout: ' + stdout);
            if(stderr!==''){ console.log('stderr: ' + stderr);};
             
-            if (error !==null) {
+            if (error !=="Error: Command failed: /bin/sh -c gulp clean") {
                 console.log('exec error: ' + error);
             }
             done();
@@ -133,6 +133,16 @@ describe('SIGNUP', function () {//mocha
                            done();
                         });
             });
+            
+            //unable to test '/' request for "YOU ARE LOGGED IN" RESPONSE TEXT.
+            it('Should signout and redirect to homepage', function (done) {
+                supertest(app).get('/signout')//supertest
+                        .end(function(err,res){
+                            res.text.should.containEql('Found. Redirecting to /');
+                            res.status.should.be.equal(302);
+                           done();
+                        });
+            });
         });
     
     after(function (done) {
@@ -140,7 +150,7 @@ describe('SIGNUP', function () {//mocha
             console.log('stdout: ' + stdout);
            if(stderr!==''){ console.log('stderr: ' + stderr);};
 
-            if (error !==null) {
+            if (error !=="Error: Command failed: /bin/sh -c gulp clean") {
                 console.log('exec error: ' + error);
             }
             done();
@@ -154,7 +164,7 @@ describe('SIGNIN', function () {//mocha
             console.log('stdout: ' + stdout);
            if(stderr!==''){ console.log('stderr: ' + stderr);};
             
-            if (error !==null) {
+            if (error !=="Error: Command failed: /bin/sh -c gulp clean") {
                 console.log('exec error: ' + error);
             }
             done();
@@ -186,7 +196,6 @@ describe('SIGNIN', function () {//mocha
                         });
             });
             it('Should redirect to dashboard', function (done) {
-                
                 supertest(app).post('/signin')
                         .send(userlogin)
                         .end(function(err,res){
@@ -206,6 +215,15 @@ describe('SIGNIN', function () {//mocha
                            done();
                         });
             });
+            it('Should delete test user only', function (done) {
+                supertest(app).get('/test/kill')//supertest
+                        .end(function(err,res){
+                            res.text.should.containEql('TEST USER REMOVED');
+                            res.status.should.be.equal(200);
+                           done();
+                        });
+            });
+            
         });
     
     after(function (done) {
@@ -213,7 +231,7 @@ describe('SIGNIN', function () {//mocha
             console.log('stdout: ' + stdout);
            if(stderr!==''){ console.log('stderr: ' + stderr);};
 
-            if (error !==null) {
+            if (error !=="Error: Command failed: /bin/sh -c gulp clean") {
                 console.log('exec error: ' + error);
             }
             done();
@@ -227,7 +245,10 @@ describe('RANDOM SCORE GENERATION', function () {
                 supertest(app).get('/score')//supertest
                         .end(function(err,res){
                             parseInt(res.text).should.be.a.Number();
+                            console.log(" GULP CLEAN TASK WILL NOT CLEAN USERS BECAUSE LIVE SERVER DOES NOT HAVE PERMISSION TO DELETE USERS.")
+                            console.log(" IF TESTS DO NO PASS IT MAY BE THE CASE THAT ANOTHER USER IS ALSO RUNNING TESTS AND TEST DATA IS COLLIDING IN MONGO DB SIDE.")
                             done();
+                            
                         });
             });
             

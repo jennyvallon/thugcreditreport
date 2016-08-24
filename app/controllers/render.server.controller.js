@@ -74,7 +74,9 @@ exports.simulator = function (req, res, next) {
     }
     else  {//if user does exist
         
-        res.render('simulator',{});   
+        res.render('simulator',{
+             thugScore:req.session.user.scores.thugScore
+        });   
     }
 };
 
