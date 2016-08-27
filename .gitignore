@@ -1,2 +1,4 @@
 !/app/
 /public/lib/
+/nbproject/private/
+/node_modules/
