@@ -21,13 +21,30 @@
     "uid": "0.0.2"
   },
   "devDependencies": {
+    "beeper": "^1.1.0",
+    "browser-sync": "^2.13.0",
+    "browserify": "^13.0.1",
+    "connect": "^3.4.1",
     "del": "^2.2.1",
     "fs": "0.0.2",
-    "gulp": "gulpjs/gulp#4.0",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-imagemin": "^3.0.1",
+    "gulp-jshint": "^2.0.1",
+    "gulp-myth": "^1.1.0",
+    "gulp-nodemon": "^2.1.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sass": "^2.3.2",
     "gulp-shell": "^0.5.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.4",
+    "jshint": "^2.9.2",
     "morgan": "^1.7.0",
     "nodemon": "^1.10.0",
+    "serve-static": "^1.11.1",
     "should": "^10.0.0",
-    "supertest": "^2.0.0"
+    "supertest": "^2.0.0",
+    "vinyl-source-stream": "^1.1.0"
   }
 }
