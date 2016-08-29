@@ -1,5 +1,6 @@
 @import "./bootstrap";
 @import "./mixins";
+@import "../lib/bootstrap-sass/assets/stylesheets/bootstrap/variables";
 /*@import "./typography";*/
 
 
@@ -9,8 +10,11 @@
 @include font-face("BorgiaPro Italic", "../fonts/BorgiaPro-Italic-webfont", "italic");
 @include font-face("BorgiaPro Bold Italic", "../fonts/BorgiaPro-BoldItalic-webfont", "bold", "italic");
 
+body{
+    font-size: 12pt;
+}
 
-h1,h2,p,a,aside{
+h1,h2,p,a,aside,label{
     font-family: "BorgiaPro";
 }
 
@@ -31,6 +35,10 @@ a,a:link, a:visited, a:active{
     }
 }
 
+.flash{
+    color: red;
+}
+
 //custom elements
 page-container{
   display: block;  
@@ -42,25 +50,61 @@ page-container{
 //general element styles
 body{
     position: relative;
+    
+    
     page-container{
+        @extend .col-xs-10; 
+        @extend .col-sm-5; 
+        margin-top:25vh; 
         position:absolute;
         left: 50%;
         right: 50%;
         text-align: center;
+        
+        
         nav{
             display: flex;
             flex-direction: row;
             justify-content: space-around;
         }
+        @media(min-width: $screen-sm-min){
+            margin-left: -22%;  
+        }
+        @media(max-width: $screen-xs-max){
+                margin-left: -41vw; 
+        }
+    }
+    
+    
+    form{
+        div{
+            margin:20px;
+            input{
+                border-style: hidden hidden solid hidden;
+                border-bottom: black 1px solid;
+                font-family:"BorgiaPro Italic";
+                &:focus{
+                    outline:none;
+                }
+                font-size: 100%;
+            }
+            input[type="submit"]{
+                border:none;
+                background-color: transparent;
+                margin-top: 20px;
+                &:hover{
+                    font-family: "BorgiaPro Bold Italic";
+                    cursor:pointer;
+                }
+            }
+        }
     }
 }
 
 
-//page level
-body[data-activePage="home"]{
-    page-container{
-        @extend .col-xs-4; 
-        margin-left: -15%;
-        margin-top: 15%; 
-    }
-}
+
+
+
+
+
+
