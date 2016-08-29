@@ -14,15 +14,21 @@ body{
     font-size: 12pt;
 }
 
-h1,h2,p,a,aside,label{
+h1,h2,p,a,aside,label,li{
     font-family: "BorgiaPro";
+}
+
+ul{
+    text-align: left;
+    list-style-type: none;
+    font-size: 90%;
 }
 
 h1,h2,h3,h4,h5,h6{
     text-transform: uppercase;
 }
 
-aside{
+aside, input, input:hover{
     font-family: "BorgiaPro Italic";
 }
 
@@ -40,7 +46,8 @@ a,a:link, a:visited, a:active{
 }
 
 //custom elements
-page-container{
+page-container,
+question-module{
   display: block;  
 }
 
@@ -82,21 +89,49 @@ body{
             input{
                 border-style: hidden hidden solid hidden;
                 border-bottom: black 1px solid;
-                font-family:"BorgiaPro Italic";
                 &:focus{
                     outline:none;
                 }
                 font-size: 100%;
             }
-            input[type="submit"]{
-                border:none;
-                background-color: transparent;
-                margin-top: 20px;
-                &:hover{
-                    font-family: "BorgiaPro Bold Italic";
-                    cursor:pointer;
-                }
+            input[type='radio']:checked{
+                outline-color:black;
             }
+        }
+    }
+}
+
+input[type="submit"]{
+    border:none;
+    background-color: transparent;
+    margin-top: 20px;
+    &:hover{
+        cursor:pointer;
+    }
+}
+
+//page specific styles
+body[data-activePage="questions"]{
+    page-container{
+        margin-top: 20vh;
+        overflow: scroll;
+        padding-bottom: 100px;
+        @media(max-width: $screen-xs-max){
+            margin-left: -49vw; 
+        }
+        form{
+            margin:75px 0 150px 0;
+            
+            p{
+                font-weight: bold;
+            }
+            ul{
+                @media(max-width: $screen-xs-max){
+                    padding:0;
+                }
+
+            }
+            
         }
     }
 }
