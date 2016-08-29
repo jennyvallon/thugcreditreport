@@ -14,8 +14,10 @@ module.exports = {
     nodemon:{
         options:{
             verbose: true,
-            ignore: ["./sessions/*","./node-modules/*", "./public/lib/*"],
-            script: 'server.js'
+            ignore: ["./sessions/**","./node-modules/**","public/css/styles.css", "./public/lib/**"],
+            ext: 'js json scss css',
+            script: 'server.js', 
+            tasks: ['styles']  
         }
     }
 };

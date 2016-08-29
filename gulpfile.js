@@ -31,38 +31,24 @@ gulp.task('clean-sessions', function () {
 
 gulp.task('styles', function () {
     return gulp.src(config.sass.source)
-            .pipe(plumber({errorHandler:funct.onError}))
             .pipe(sourcemaps.init())
+            .pipe(sass().on('error', sass.logError))
             .pipe(sass())
             .pipe(sourcemaps.write())
             .pipe(gulp.dest(config.sass.dest));
 });
 
-
 gulp.task('scripts', function () {
     return gulp.src(config.js.source)
-            .pipe(sourcemaps.init()) // initialize source-map plug-in
-            .pipe(concat('app.js'))
             .pipe(jshint())
-            .pipe(jshint.reporter('default'))
-            .pipe(uglify())
-            .pipe(sourcemaps.write())
-            .pipe(gulp.dest(config.js.dest));
+            .pipe(jshint.reporter('default'));          
 });
 
-gulp.task('watch', function () {
-    gulp.watch(config.sass.source, gulp.series('styles',
-            browsersync.reload));
-    gulp.watch(config.js.source, gulp.series('scripts',
-            browsersync.reload));
-});
 
 gulp.task('start', function () {
   nodemon(config.nodemon.options);
 });
 
-
-
 gulp.task('clean', gulp.parallel('clean-db', 'clean-sessions'));
-gulp.task('default', gulp.series('styles', 'scripts', 'start', 'watch'));
+gulp.task('default', gulp.series('styles', 'scripts', 'start'));
    

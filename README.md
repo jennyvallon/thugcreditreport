@@ -27,7 +27,8 @@ How to Get Started<br>
 1.go to application root folder in CLI<br>
 2.type "npm install", press enter to download dependencies<br>
 3.type "bower install", press enter to download dependencies<br>
-4. type "node server.js", press enter to launch app instance on your local machine.<br>
+4. type "gulp", press enter to launch app instance on your local machine.<br>
+5. Project will launch in development environment by default. This is fine.
 <br>
 <br>
 What You can expect<br>
