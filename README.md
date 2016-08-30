@@ -25,9 +25,9 @@ Thug Report is still in development. Here is what needs to happen to bring it to
 How to Get Started<br> 
 0.Fork
 1.go to application root folder in CLI<br>
-2.type "npm install", press enter to download dependencies<br>
-3.type "bower install", press enter to download dependencies<br>
-4. type "gulp", press enter to launch app instance on your local machine.<br>
+2.$ npm install<br>
+3.$ bower install<br>
+4.$ gulp <br>
 5. Project will launch in development environment by default. This is fine.
 <br>
 <br>
@@ -41,12 +41,14 @@ What You can expect<br>
 <br>
 <br> 
 Tasks<br>
-1.type "gulp clean-sessions" in CLI. It will remove sessions<br>
-2.type "gulp clean-db" in CLI. It will remove users in db--used while testing authentication<br>
+1.$ gulp clean-sessions<br>
+2.$ gulp clean-db <br>
+3.$ gulp styles <br>
+3.$ gulp start <br>
 <br>
 <br>
 Testing<br>
-1.type "NODE_ENV=test mocha --reporter spec app/tests" in CLI to see tests<br>
+1.$ NODE_ENV=test mocha --reporter spec app/tests <br>
 <br>
 <br>
 Note<br>
