@@ -25,9 +25,9 @@ Thug Report is still in development. Here is what needs to happen to bring it to
 How to Get Started<br> 
 0.Fork<br>
 1.go to application root folder in CLI<br>
-2.$ npm install<br>
-3.$ bower install<br>
-4.$ gulp <br>
+$ npm install<br>
+$ bower install<br>
+$ gulp <br>
 5. Project will launch in development environment by default. This is fine.
 <br>
 <br>
@@ -41,14 +41,14 @@ What You can expect<br>
 <br>
 <br> 
 Tasks<br>
-1.$ gulp clean-sessions<br>
-2.$ gulp clean-db <br>
-3.$ gulp styles <br>
-3.$ gulp start <br>
+$ gulp clean-sessions<br>
+$ gulp clean-db <br>
+$ gulp styles <br>
+$ gulp start <br>
 <br>
 <br>
 Testing<br>
-1.$ NODE_ENV=test mocha --reporter spec app/tests <br>
+$ NODE_ENV=test mocha --reporter spec app/tests <br>
 <br>
 <br>
 Note<br>
