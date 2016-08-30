@@ -23,7 +23,7 @@ Thug Report is still in development. Here is what needs to happen to bring it to
 <br>
 <br>
 How to Get Started<br> 
-0.Fork
+0.Fork<br>
 1.go to application root folder in CLI<br>
 2.$ npm install<br>
 3.$ bower install<br>
