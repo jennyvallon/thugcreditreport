@@ -1,4 +1,4 @@
-angular.module('example').controller('snitch', ['$scope',
+angular.module('simulator').controller('snitch', ['$scope',
     function($scope) {
         
         $scope.simulatedActionDetailArray=
@@ -9,7 +9,7 @@ angular.module('example').controller('snitch', ['$scope',
             'and you are of sound mind to still check your score, then, you must be crazy. You get a little bump.',
             'for the sake of the community Thug Report has alerted local bosses to "take care" of you.'
         ];
-        $scope.score= $('current-score').text();
+        $scope.score= $('thug-score').text();
         
         $(document).ready(function(){
             $scope.newScore=$scope.score;

@@ -1,4 +1,4 @@
-angular.module('example').controller('movework', ['$scope',
+angular.module('simulator').controller('movework', ['$scope',
      function($scope) {
        $scope.name = 'move more work';
      }]);

@@ -1,0 +1,74 @@
+/*typography*/
+@include font-face("BorgiaPro", "../fonts/BorgiaPro-Regular-webfont");
+@include font-face("BorgiaPro Bold", "../fonts/BorgiaPro-Bold-webfont", "bold");
+@include font-face("BorgiaPro Italic", "../fonts/BorgiaPro-Italic-webfont", "italic");
+@include font-face("BorgiaPro Bold Italic", "../fonts/BorgiaPro-BoldItalic-webfont", "bold", "italic");
+
+body{
+    font-size: 12pt;
+}
+
+h1,h2,p,a,aside,label,li{
+    font-family: "BorgiaPro";
+}
+
+ul{
+    text-align: left;
+    list-style-type: none;
+    font-size: 90%;
+}
+
+h1,h2,h3,h4,h5,h6{
+    text-transform: uppercase;
+}
+
+aside, input, input:hover{
+    font-family: "BorgiaPro Italic";
+}
+
+a,a:link, a:visited, a:active{
+    font-size: 90%;
+    color: black;
+    font-family:"BorgiaPro Italic";
+    text-decoration: none;
+    &:hover{
+        cursor:pointer;
+        text-decoration: underline;
+        
+    }
+}
+
+.flash{
+    color: red;
+}
+
+score-module{
+    margin-bottom: 25px;
+    p{
+        text-align: left;
+        font-size: 90%;
+        span{
+            font-family:"BorgiaPro Italic";
+            font-size: 70%;
+        }
+    }
+}
+
+thug-score, 
+new-score{
+        font-size: 400%; 
+}
+
+new-score::before{
+    content:"==>";
+}
+
+    
+    
+simulator-module{
+    highlighted-action{
+        p{
+            text-align: center;
+        }
+    }
+}

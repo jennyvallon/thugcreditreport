@@ -1,6 +1,6 @@
 var mainApplicationModuleName = 'mean'; 
 var mainApplicationModule = angular.module(mainApplicationModuleName
-   , ['ngRoute','example']);
+   , ['ngRoute','simulator']);
 var url='';
    
 mainApplicationModule.config(['$locationProvider',
