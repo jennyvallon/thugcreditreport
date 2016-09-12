@@ -60,4 +60,3 @@ Troubleshooting tools<br>
 2. special characters accidentally make it into the code-console will show them. Delete them.<br>
 3. make sure queries run on model are introduced in the schema.<br>
 4. Make sure configs are correct as app architecture changes<br>
-5. If not above, you fucked something up with the code--may God bless your soul.<br>
